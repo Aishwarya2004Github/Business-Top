@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Box,
   Button,
@@ -47,6 +48,7 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
+  
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();

@@ -23,7 +23,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../../state"; // Ensure this path is correct
 import { useNavigate } from "react-router-dom";
-import FlexBetween from "../../components/FlexBetween"; // Ensure this path is correct
+import FlexBetween from "../../components/FlexBetween";
+import Logo from "../../assets/logo.svg"; // Ensure this path is correct
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -54,8 +55,15 @@ const Navbar = () => {
               color: primaryLight,
               cursor: "pointer",
             },
+            display: "flex",
+            alignItems: "center", // Aligning logo with text
           }}
         >
+          <img
+            src={Logo}
+            alt="logo"
+            style={{ height: "2rem", marginRight: "0.5rem" }} // Adjust the height here
+          />
           Business Top
         </Typography>
         {isNonMobileScreens && (
