@@ -27,34 +27,30 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const isFriend = friends && friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${_id}/${friendId}`,
-        {
-          method: isFriend ? "DELETE" : "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error(
-          `Failed to ${isFriend ? "remove" : "add"} friend.`
-        );
+    const response = await fetch(
+      `http://localhost:5000/users/${_id}/${friendId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       }
-      const data = await response.json();
-      dispatch(setFriends(data)); // Dispatching action with the updated data
-    } catch (error) {
-      console.error(`Error ${isFriend ? "removing" : "adding"} friend:`, error);
-    }
+    );
+    const data = await response.json();
+    dispatch(setFriends({ friends: data }));
   };
 
   return (
     <FlexBetween>
-      <FlexBetween gap="1rem" onClick={() => navigate(`/profile/${friendId}`)}>
+      <FlexBetween gap="1rem">
         <UserImage image={userPicturePath} size="55px" />
-        <Box>
+        <Box
+          onClick={() => {
+            navigate(`/profile/${friendId}`);
+            navigate(0);
+          }}
+        >
           <Typography
             color={main}
             variant="h5"
@@ -74,7 +70,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         </Box>
       </FlexBetween>
       <IconButton
-        onClick={patchFriend}
+        onClick={() => patchFriend()}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
         {isFriend ? (
@@ -86,6 +82,4 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     </FlexBetween>
   );
 };
-
 export default Friend;
-

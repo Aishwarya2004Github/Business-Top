@@ -23,7 +23,7 @@ const PostWidget = ({
   likes,
   comments,
 }) => {
-  const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+  const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -90,7 +90,7 @@ const PostWidget = ({
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsCommentsVisible(!isCommentsVisible)}>
+            <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
@@ -101,7 +101,7 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {isCommentsVisible && (
+      {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
@@ -116,6 +116,6 @@ const PostWidget = ({
       )}
     </WidgetWrapper>
   );
-};
+}; 
 
 export default PostWidget;

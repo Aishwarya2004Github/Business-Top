@@ -8,26 +8,26 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
-  const fetchPosts = async (url) => {
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-      dispatch(setPosts({ posts: data }));
-    } catch (error) {
-      console.error("Failed to fetch posts:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchPosts = async (url) => {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+        dispatch(setPosts({ posts: data }));
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
     if (isProfile) {
       fetchPosts(`http://localhost:5000/posts/${userId}/posts`);
     } else {
       fetchPosts("http://localhost:5000/posts");
     }
-  }, [isProfile, userId, token, dispatch]); // Added dependencies to useEffect
+  }, [isProfile, userId, token, dispatch]); // Dependencies include token and dispatch
 
   return (
     <>
