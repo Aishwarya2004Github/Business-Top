@@ -23,5 +23,12 @@ https://github.com/Aishwarya2004Github/Business-Top/assets/160381307/1e651de6-3b
 Tools & technologies used: React-router,Formik,yup, Redux-ToolKit,Redux with Persistent MongoDB, Node.js, Express.js, React, Jwt, Bcrypt.
 •	Implemented Authentication using bcrypt hashing methods while Authorization is implemented by a JWT token for secure transmission of data between React as frontend and Express.js server.
 •	For backend:Nodejs, Expressjs ,Mongoose, Jwt, Multer.
-•	For Frontend: React, React Router, Formik, yup, Redux-Toolkit, Redux with Persistent.
+•	For Frontend: React, React Router, Formik, yup, Redux-Toolkit, Redux with Persistent
+
+
+# For Registration below is the demo video
+
+
+https://github.com/Aishwarya2004Github/Business-Top/assets/160381307/f7e5fe25-123d-467a-a73a-f40f3b2b0b0c
+
 
