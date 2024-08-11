@@ -19,6 +19,8 @@ import {
   Help,
   Menu,
   Close,
+  Fullscreen,
+  FullscreenExit,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../../state"; // Ensure this path is correct
@@ -28,6 +30,7 @@ import Logo from "../../assets/logo.svg"; // Ensure this path is correct
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user); // Ensure 'user' is correctly structured in your Redux store
@@ -41,6 +44,16 @@ const Navbar = () => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`;
+
+  const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -94,6 +107,13 @@ const Navbar = () => {
           <Message sx={{ fontSize: "25px" }} />
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
+          <IconButton onClick={handleFullscreen}>
+            {isFullscreen ? (
+              <FullscreenExit sx={{ fontSize: "25px" }} />
+            ) : (
+              <Fullscreen sx={{ fontSize: "25px" }} />
+            )}
+          </IconButton>
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -169,6 +189,13 @@ const Navbar = () => {
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
+            <IconButton onClick={handleFullscreen}>
+              {isFullscreen ? (
+                <FullscreenExit sx={{ fontSize: "25px" }} />
+              ) : (
+                <Fullscreen sx={{ fontSize: "25px" }} />
+              )}
+            </IconButton>
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

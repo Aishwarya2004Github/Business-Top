@@ -20,15 +20,15 @@ const AdvertWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="http://localhost:5000/assets/info4.jpeg"
+        src="http://localhost:5000/assets/info42.jpg"
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}>MikaCosmetics</Typography>
-        <Typography color={medium}>mikacosmetics.com</Typography>
+        <Typography color={main}>Software developer</Typography>
+        <Typography color={medium}>softwaredeveloper.com</Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0">
-        Your pathway to stunning and immaculate beauty. Make sure your skin
+        Your pathway to stunning and unbelievable developments. Make sure your skills
         is exfoliated and shining like light.
       </Typography>
     </WidgetWrapper>

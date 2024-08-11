@@ -29,6 +29,12 @@ const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
+  const [isClip, setIsClip] = useState(false);
+  const [clip, setClip] = useState(null);
+  const [isAttachment, setIsAttachment] = useState(false);
+  const [attachment, setAttachment] = useState(null);
+  const [isAudio, setIsAudio] = useState(false);
+  const [audio, setAudio] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
@@ -45,7 +51,18 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
-
+    if (clip) {
+      formData.append("picture", clip);
+      formData.append("picturePath", clip.name);
+    }
+    if (attachment) {
+      formData.append("picture", attachment);
+      formData.append("picturePath", attachment.name);
+    }
+    if (audio) {
+      formData.append("picture", audio);
+      formData.append("picturePath", audio.name);
+    }
     try {
       const response = await fetch(`http://localhost:5000/posts`, {
         method: "POST",
@@ -55,6 +72,9 @@ const MyPostWidget = ({ picturePath }) => {
       const posts = await response.json();
       dispatch(setPosts({ posts }));
       setImage(null);
+      setClip(null);
+      setAttachment(null);
+      setAudio(null);
       setPost("");
     } catch (error) {
       console.error("Error posting:", error);
@@ -122,6 +142,141 @@ const MyPostWidget = ({ picturePath }) => {
         </Box>
       )}
 
+{isClip && (
+        <Box
+          border={`1px solid ${medium}`}
+          borderRadius="5px"
+          mt="1rem"
+          p="1rem"
+        >
+          <Dropzone
+            acceptedFiles=".gif,.apng,.avi,.mov"
+            multiple={false}
+            onDrop={(acceptedFiles) => setClip(acceptedFiles[0])}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <FlexBetween>
+                <Box
+                  {...getRootProps()}
+                  border={`2px dashed ${palette.primary.main}`}
+                  p="1rem"
+                  width="100%"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                >
+                  <input {...getInputProps()} />
+                  {!clip ? (
+                    <Typography>Add Clip Here</Typography>
+                  ) : (
+                    <FlexBetween>
+                      <Typography>{clip.name}</Typography>
+                      <EditOutlined />
+                    </FlexBetween>
+                  )}
+                </Box>
+                {clip && (
+                  <IconButton
+                    onClick={() => setClip(null)}
+                    sx={{ width: "15%" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                )}
+              </FlexBetween>
+            )}
+          </Dropzone>
+        </Box>
+      )}
+
+{isAttachment && (
+        <Box
+          border={`1px solid ${medium}`}
+          borderRadius="5px"
+          mt="1rem"
+          p="1rem"
+        >
+          <Dropzone
+            acceptedFiles=".mp4,.webm"
+            multiple={false}
+            onDrop={(acceptedFiles) => setAttachment(acceptedFiles[0])}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <FlexBetween>
+                <Box
+                  {...getRootProps()}
+                  border={`2px dashed ${palette.primary.main}`}
+                  p="1rem"
+                  width="100%"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                >
+                  <input {...getInputProps()} />
+                  {!attachment ? (
+                    <Typography>Add Attachment Here</Typography>
+                  ) : (
+                    <FlexBetween>
+                      <Typography>{attachment.name}</Typography>
+                      <EditOutlined />
+                    </FlexBetween>
+                  )}
+                </Box>
+                {attachment && (
+                  <IconButton
+                    onClick={() => setAttachment(null)}
+                    sx={{ width: "15%" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                )}
+              </FlexBetween>
+            )}
+          </Dropzone>
+        </Box>
+      )}
+
+{isAudio && (
+        <Box
+          border={`1px solid ${medium}`}
+          borderRadius="5px"
+          mt="1rem"
+          p="1rem"
+        >
+          <Dropzone
+            acceptedFiles=".mp3,.wav,.ogg"
+            multiple={false}
+            onDrop={(acceptedFiles) => setAudio(acceptedFiles[0])}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <FlexBetween>
+                <Box
+                  {...getRootProps()}
+                  border={`2px dashed ${palette.primary.main}`}
+                  p="1rem"
+                  width="100%"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                >
+                  <input {...getInputProps()} />
+                  {!audio ? (
+                    <Typography>Add Audio Here</Typography>
+                  ) : (
+                    <FlexBetween>
+                      <Typography>{audio.name}</Typography>
+                      <EditOutlined />
+                    </FlexBetween>
+                  )}
+                </Box>
+                {audio && (
+                  <IconButton
+                    onClick={() => setAudio(null)}
+                    sx={{ width: "15%" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                )}
+              </FlexBetween>
+            )}
+          </Dropzone>
+        </Box>
+      )}
+
       <Divider sx={{ margin: "1.25rem 0" }} />
 
       <FlexBetween>
@@ -137,19 +292,26 @@ const MyPostWidget = ({ picturePath }) => {
 
         {isNonMobileScreens ? (
           <>
-            <FlexBetween gap="0.25rem">
+            <FlexBetween gap="0.25rem" onClick={() => setIsClip(!isClip)}>
               <GifBoxOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Clip</Typography>
+              <Typography color={mediumMain}
+              sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+              >
+              Clip</Typography>
             </FlexBetween>
 
-            <FlexBetween gap="0.25rem">
+            <FlexBetween gap="0.25rem" onClick={() => setIsAttachment(!isAttachment)}>
               <AttachFileOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Attachment</Typography>
+              <Typography color={mediumMain}
+               sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+               >Attachment</Typography>
             </FlexBetween>
 
-            <FlexBetween gap="0.25rem">
+            <FlexBetween gap="0.25rem"  onClick={() => setIsAudio(!isAudio)}>
               <MicOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Audio</Typography>
+              <Typography color={mediumMain}
+               sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+               >Audio</Typography>
             </FlexBetween>
           </>
         ) : (

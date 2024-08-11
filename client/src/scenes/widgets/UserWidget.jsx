@@ -3,17 +3,21 @@ import {
   EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
+  SaveOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
-import UserImage from "../../components/UserImage"; // Adjusted import path
-import FlexBetween from "../../components/FlexBetween"; // Adjusted import path
-import WidgetWrapper from "../../components/WidgetWrapper"; // Adjusted import path
+import { Box, Typography, Divider, useTheme, TextField, IconButton } from "@mui/material";
+import UserImage from "../../components/UserImage";
+import FlexBetween from "../../components/FlexBetween";
+import WidgetWrapper from "../../components/WidgetWrapper";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
+  const [editMode, setEditMode] = useState({ location: false, occupation: false });
+  const [tempLocation, setTempLocation] = useState("");
+  const [tempOccupation, setTempOccupation] = useState("");
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
@@ -57,6 +61,50 @@ const UserWidget = ({ userId, picturePath }) => {
     friends,
   } = user;
 
+  const handleEdit = (field) => {
+    if (field === "location") {
+      setTempLocation(location);
+      setEditMode({ ...editMode, location: true });
+    } else if (field === "occupation") {
+      setTempOccupation(occupation);
+      setEditMode({ ...editMode, occupation: true });
+    }
+  };
+
+  const handleSave = async (field) => {
+    let updatedData;
+    if (field === "location") {
+      updatedData = { location: tempLocation };
+    } else if (field === "occupation") {
+      updatedData = { occupation: tempOccupation };
+    }
+  
+    try {
+      console.log(`Sending update for ${field}:`, updatedData);
+  
+      const response = await fetch(`http://localhost:5000/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update user data");
+      }
+  
+      const updatedUser = await response.json();
+      console.log("Update successful, received updated user data:", updatedUser);
+  
+      setUser(updatedUser);
+      setEditMode({ ...editMode, [field]: false });
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
+  
   return (
     <WidgetWrapper>
       {/* FIRST ROW */}
@@ -93,11 +141,37 @@ const UserWidget = ({ userId, picturePath }) => {
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
+          {editMode.location ? (
+            <TextField
+              value={tempLocation}
+              onChange={(e) => setTempLocation(e.target.value)}
+              variant="outlined"
+              size="small"
+              sx={{ width: '80%' }}
+            />
+          ) : (
+            <Typography color={medium}>{location}</Typography>
+          )}
+          <IconButton onClick={() => editMode.location ? handleSave("location") : handleEdit("location")}>
+            {editMode.location ? <SaveOutlined /> : <EditOutlined />}
+          </IconButton>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{occupation}</Typography>
+          {editMode.occupation ? (
+            <TextField
+              value={tempOccupation}
+              onChange={(e) => setTempOccupation(e.target.value)}
+              variant="outlined"
+              size="small"
+              sx={{ width: '80%' }}
+            />
+          ) : (
+            <Typography color={medium}>{occupation}</Typography>
+          )}
+          <IconButton onClick={() => editMode.occupation ? handleSave("occupation") : handleEdit("occupation")}>
+            {editMode.occupation ? <SaveOutlined /> : <EditOutlined />}
+          </IconButton>
         </Box>
       </Box>
 
@@ -129,7 +203,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="/assets/twitter.png" alt="twitter" /> {/* Updated image path */}
+            <img src="/assets/twitter.png" alt="twitter" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -140,14 +214,53 @@ const UserWidget = ({ userId, picturePath }) => {
           <EditOutlined sx={{ color: main }} />
         </FlexBetween>
 
-        <FlexBetween gap="1rem">
+        <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="/assets/linkedin.png" alt="linkedin" /> {/* Updated image path */}
+            <img src="/assets/linkedin.png" alt="linkedin" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin
               </Typography>
               <Typography color={medium}>Network Platform</Typography>
+            </Box>
+          </FlexBetween>
+          <EditOutlined sx={{ color: main }} />
+        </FlexBetween>
+
+        <FlexBetween gap="1rem" mb="0.5rem">
+          <FlexBetween gap="1rem">
+            <img src="/assets/instagram.png" alt="instagram" height={"30px"} width={"25px"} />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                Instagram
+              </Typography>
+              <Typography color={medium}>Social Platform</Typography>
+            </Box>
+          </FlexBetween>
+          <EditOutlined sx={{ color: main }} />
+        </FlexBetween>
+
+        <FlexBetween gap="1rem" mb="0.5rem">
+          <FlexBetween gap="1rem">
+            <img src="/assets/telegram.png" alt="telegram" height={"30px"} width={"25px"} />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                telegram
+              </Typography>
+              <Typography color={medium}>Social Platform</Typography>
+            </Box>
+          </FlexBetween>
+          <EditOutlined sx={{ color: main }} />
+        </FlexBetween>
+
+        <FlexBetween gap="1rem" mb="0.5rem">
+          <FlexBetween gap="1rem">
+            <img src="/assets/facebook.png" alt="facebook" height={"30px"} width={"25px"} />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                facebook
+              </Typography>
+              <Typography color={medium}>Social platform</Typography>
             </Box>
           </FlexBetween>
           <EditOutlined sx={{ color: main }} />
