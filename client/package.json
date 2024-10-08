@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
+    "firebase": "^10.13.0",
     "formik": "^2.4.6",
     "framer-motion": "^11.3.19",
     "react": "^18.3.1",
@@ -23,6 +24,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
+    "server": "file:..",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
   },
