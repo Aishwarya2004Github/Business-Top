@@ -35,12 +35,13 @@ app.use("/assets", express.static(path.join(__dirname, "../public/assets")));
 /* FILE STORAGE */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../public/assets");
+    cb(null, path.join(__dirname, "../public/assets"));
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
@@ -55,18 +56,15 @@ app.use("/posts", postRoutes);
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname,"../client/build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
+
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
 mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URL)
   .then(() => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-
     /* ADD DATA ONE TIME */
     // User.insertMany(users);
     // Post.insertMany(posts);
