@@ -36,7 +36,7 @@ const PostWidget = ({
 
   const handleLike = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
+      const response = await fetch(`https://business-top.onrender.com/posts/${postId}/like`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:5000/assets/${picturePath}`}
+          src={`https://business-top.onrender.com/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
