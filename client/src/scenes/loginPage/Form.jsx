@@ -136,6 +136,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.firstName}
                   name="firstName"
+                  autoComplete="off"
                   error={
                     Boolean(touched.firstName) && Boolean(errors.firstName)
                   }
@@ -148,6 +149,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.lastName}
                   name="lastName"
+                  autoComplete="off"
                   error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
@@ -158,6 +160,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.location}
                   name="location"
+                  autoComplete="off"
                   error={Boolean(touched.location) && Boolean(errors.location)}
                   helperText={touched.location && errors.location}
                   sx={{ gridColumn: "span 4" }}
@@ -168,6 +171,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.occupation}
                   name="occupation"
+                  autoComplete="off"
                   error={
                     Boolean(touched.occupation) && Boolean(errors.occupation)
                   }
@@ -216,6 +220,7 @@ const Form = () => {
               onChange={handleChange}
               value={values.email}
               name="email"
+              autoComplete="off"
               error={Boolean(touched.email) && Boolean(errors.email)}
               helperText={touched.email && errors.email}
               sx={{ gridColumn: "span 4" }}
